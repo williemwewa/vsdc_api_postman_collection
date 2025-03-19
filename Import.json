@@ -1,0 +1,854 @@
+{
+    "info": {
+        "_postman_id": "ec5df7e0-e5a4-4fa3-8bfb-2a4d8d10f6df",
+        "name": "ZRA VSDC API Collection",
+        "description": "A collection of API calls for the Zambia Revenue Authority's Virtual Sales Data Controller (VSDC) API to integrate third-party systems with Smart Invoice.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8080/zravsdc",
+            "type": "string",
+            "description": "The base URL for the VSDC API. Update this to match your deployment environment."
+        }
+    ],
+    "item": [
+        {
+            "name": "1. Device Initialization",
+            "item": [
+                {
+                    "name": "Device Initialization",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"dvcSrlNo\": \"20180520000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/initializer/selectInitInfo",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "initializer",
+                                "selectInitInfo"
+                            ]
+                        },
+                        "description": "Initializes the device for interaction between CIS and Smart Invoice. This endpoint is only called once for any new device registration. It retrieves API keys used to authenticate and verify the user.\n\nNote: Details returned in the response MUST be stored locally for future reference."
+                    }
+                }
+            ],
+            "description": "Endpoints for device initialization. These endpoints are only invoked during the initial setup of the VSDC."
+        },
+        {
+            "name": "2. Standard and Classification Codes",
+            "item": [
+                {
+                    "name": "Get Standard Codes",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/code/selectCodes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "code",
+                                "selectCodes"
+                            ]
+                        },
+                        "description": "Retrieves a comprehensive list of standard codes along with their descriptions to be stored and used for all transaction requests in taxpayer's third-party system."
+                    }
+                },
+                {
+                    "name": "Get Classification Codes",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/itemClass/selectItemsClass",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "itemClass",
+                                "selectItemsClass"
+                            ]
+                        },
+                        "description": "Retrieves and stores updates to classification codes used for item management. Due to the substantial size of classification codes, the API implements pagination. Developers can retrieve codes in batches of 1000, optimizing performance and minimizing data transfer overhead."
+                    }
+                },
+                {
+                    "name": "Get Notices",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/notices/selectNotices",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "notices",
+                                "selectNotices"
+                            ]
+                        },
+                        "description": "Retrieves details of all notices published by ZRA on Smart Invoice."
+                    }
+                }
+            ],
+            "description": "Endpoints for retrieving standard codes and classification codes used throughout the API."
+        },
+        {
+            "name": "3. Branch Information",
+            "item": [
+                {
+                    "name": "Get Branches",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/branches/selectBranches",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "branches",
+                                "selectBranches"
+                            ]
+                        },
+                        "description": "Retrieve details of all registered branches from Smart Invoice."
+                    }
+                },
+                {
+                    "name": "Save Branch User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"userId\": \"SMART USER\",\n    \"userNm\": \"SMART USER\",\n    \"adrs\": \"Smart Invoice Street 1234\",\n    \"useYn\": \"Y\",\n    \"regrNm\": \"Admin\",\n    \"regrId\": \"Admin\",\n    \"modrNm\": \"Admin\",\n    \"modrId\": \"Admin\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/branches/saveBrancheUser",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "branches",
+                                "saveBrancheUser"
+                            ]
+                        },
+                        "description": "Saves branch user accounts created in the third-party system to Smart Invoice."
+                    }
+                },
+                {
+                    "name": "Save Branch Customer",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"custNo\": \"097xxxxxxx\",\n    \"custTpin\": \"2000000000\",\n    \"custNm\": \"ZRA\",\n    \"adrs\": null,\n    \"email\": null,\n    \"faxNo\": null,\n    \"useYn\": \"Y\",\n    \"remark\": null,\n    \"regrNm\": \"Admin\",\n    \"regrId\": \"Admin\",\n    \"modrNm\": \"Admin\",\n    \"modrId\": \"Admin\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/branches/saveBrancheCustomers",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "branches",
+                                "saveBrancheCustomers"
+                            ]
+                        },
+                        "description": "Saves customer details captured in third-party system to Smart Invoice."
+                    }
+                }
+            ],
+            "description": "Endpoints for managing branch information within Smart Invoice."
+        },
+        {
+            "name": "4. Customer Information",
+            "item": [
+                {
+                    "name": "Get Customer",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"custmTpin\": \"2000000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/customers/selectCustomer",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "customers",
+                                "selectCustomer"
+                            ]
+                        },
+                        "description": "Retrieves customer details based on the provided customer TPIN."
+                    }
+                }
+            ],
+            "description": "Endpoints for managing customer information within Smart Invoice."
+        },
+        {
+            "name": "5. Item Information",
+            "item": [
+                {
+                    "name": "Save Item",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"itemCd\": \"P200005\",\n    \"itemClsCd\": \"43322555\",\n    \"itemTyCd\": \"2\",\n    \"itemNm\": \"Corn Flakes\",\n    \"itemStdNm\": \"Corn Flakes\",\n    \"orgnNatCd\": \"SA\",\n    \"pkgUnitCd\": \"BOX\",\n    \"qtyUnitCd\": \"U\",\n    \"vatCatCd\": \"A\",\n    \"iplCatCd\": \"IPL1\",\n    \"tlCatCd\": null,\n    \"exciseTxCatCd\": null,\n    \"btchNo\": null,\n    \"bcd\": null,\n    \"dftPrc\": 15,\n    \"manufacturerTpin\": \"1000000000\",\n    \"manufacturerItemCd\": \"ZM2EA1234\",\n    \"rrp\": \"1000\",\n    \"svcChargeYn\": \"Y\",\n    \"rentalYn\": \"N\",\n    \"addInfo\": null,\n    \"sftyQty\": 5,\n    \"isrcAplcbYn\": \"N\",\n    \"useYn\": \"Y\",\n    \"regrNm\": \"ADMIN\",\n    \"regrId\": \"ADMIN\",\n    \"modrNm\": \"ADMIN\",\n    \"modrId\": \"ADMIN\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/items/saveItem",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "items",
+                                "saveItem"
+                            ]
+                        },
+                        "description": "Saves product or services created in third-party system to Smart Invoice.\n\nNote: This endpoint requires valid standard and classification codes. To ensure successful use, retrieve and store/update these codes before calling the endpoint with its attributes."
+                    }
+                },
+                {
+                    "name": "Update Item",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"itemCd\": \"P200005\",\n    \"itemClsCd\": \"50425610\",\n    \"itemTyCd\": \"2\",\n    \"itemNm\": \"Corn Flakes\",\n    \"itemStdNm\": \"Corn Flakes\",\n    \"orgnNatCd\": \"SA\",\n    \"pkgUnitCd\": \"BOX\",\n    \"qtyUnitCd\": \"U\",\n    \"vatCatCd\": \"A\",\n    \"iplCatCd\": \"IPL1\",\n    \"tlCatCd\": null,\n    \"exciseTxCatCd\": null,\n    \"btchNo\": null,\n    \"bcd\": null,\n    \"dftPrc\": 15,\n    \"manufacturerTpin\": \"1000000000\",\n    \"manufacturerItemCd\": \"1234\",\n    \"rrp\": \"1000\",\n    \"svcChargeYn\": \"Y\",\n    \"rentalYn\": \"N\",\n    \"addInfo\": null,\n    \"sftyQty\": 5,\n    \"isrcAplcbYn\": \"N\",\n    \"useYn\": \"Y\",\n    \"regrNm\": \"ADMIN\",\n    \"regrId\": \"ADMIN\",\n    \"modrNm\": \"ADMIN\",\n    \"modrId\": \"ADMIN\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/items/updateItem",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "items",
+                                "updateItem"
+                            ]
+                        },
+                        "description": "Updates specific product item details.\n\nNote: This endpoint requires valid standard and classification codes. To ensure successful use, retrieve and update these codes before calling the endpoint with its attributes."
+                    }
+                },
+                {
+                    "name": "Get Items",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/items/selectItems",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "items",
+                                "selectItems"
+                            ]
+                        },
+                        "description": "Retrieves a list of all product items saved in Smart Invoice."
+                    }
+                },
+                {
+                    "name": "Get Item",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"itemCd\": \"AT2BX0000013\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/items/selectItem",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "items",
+                                "selectItem"
+                            ]
+                        },
+                        "description": "Retrieves details of a product item based on the provided item code."
+                    }
+                },
+                {
+                    "name": "Save Item Composition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"itemCd\": \"ZM2NTBA0000051\",\n    \"cpstItemCd\": \"ZM2NTBA0000051\",\n    \"cpstQty\": 3,\n    \"regrId\": \"ADMIN\",\n    \"regrNm\": \"ADMIN\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/items/saveItemComposition",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "items",
+                                "saveItemComposition"
+                            ]
+                        },
+                        "description": "This endpoint is designed to manage the storage of items involved in processing or repackaging activities. It is particularly useful for situations where multiple products are combined or transformed into a unique finished product."
+                    }
+                },
+                {
+                    "name": "Save RRP Items",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"itemList\": [\n        {\n            \"itemCd\": \"itemCode1\",\n            \"itemClsCd\": \"50102515\",\n            \"itemTyCd\": \"3\",\n            \"itemNm\": \"Item Name Example\",\n            \"itemDesc\": \"This is fanta\",\n            \"orgnNatCd\": \"ZM\",\n            \"pkgUnitCd\": \"BG\",\n            \"qtyUnitCd\": \"BX\",\n            \"rrp\": 123.6789,\n            \"useYn\": \"Y\",\n            \"regrId\": \"admin\",\n            \"regrNm\": \"Admin\",\n            \"modrNm\": \"Admin\",\n            \"modrId\": \"1231\"\n        },\n        {\n            \"itemCd\": \"itemCode2\",\n            \"itemClsCd\": \"50102515\",\n            \"itemTyCd\": \"3\",\n            \"itemNm\": \"Item Name Example\",\n            \"itemDesc\": \"This is fanta\",\n            \"orgnNatCd\": \"ZM\",\n            \"pkgUnitCd\": \"BG\",\n            \"qtyUnitCd\": \"BX\",\n            \"rrp\": 123.6789,\n            \"useYn\": \"Y\",\n            \"regrId\": \"admin\",\n            \"regrNm\": \"Admin\",\n            \"modrNm\": \"Admin\",\n            \"modrId\": \"1231\"\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/items/saveRrpItems",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "items",
+                                "saveRrpItems"
+                            ]
+                        },
+                        "description": "This endpoint is designed to store recommended retail price items by manufacturers.\n\nNote: This endpoint should only be consumed by manufacturers with RRP."
+                    }
+                },
+                {
+                    "name": "Select RRP Items",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/items/selectRrpItems",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "items",
+                                "selectRrpItems"
+                            ]
+                        },
+                        "description": "This endpoint is designed to select recommended retail price items from manufacturers data.\n\nNote: This endpoint should only be consumed by sellers of MTV products. It is used to get Recommended Retail Prices set by manufacturers which will be used when processing sales with MTV products."
+                    }
+                }
+            ],
+            "description": "Endpoints for managing item information within Smart Invoice."
+        },
+        {
+            "name": "6. Import Information",
+            "item": [
+                {
+                    "name": "Get Imports",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\",\n    \"dclRefNum\": \"CX1100096839\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/imports/selectImportItems",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "imports",
+                                "selectImportItems"
+                            ]
+                        },
+                        "description": "Retrieves a list of imported items saved on Smart Invoice from ASYCUDA."
+                    }
+                },
+                {
+                    "name": "Update Import Items",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"taskCd\": \"4561614\",\n    \"dclDe\": \"20240426\",\n    \"importItemList\": [\n        {\n            \"itemSeq\": 2,\n            \"hsCd\": \"72149900000\",\n            \"itemClsCd\": \"5022110801\",\n            \"itemCd\": \"RW1NTXU0000006\",\n            \"imptItemSttsCd\": \"3\",\n            \"remark\": \"remark\",\n            \"modrNm\": \"Admin\",\n            \"modrId\": \"Admin\"\n        },\n        {\n            \"itemSeq\": 3,\n            \"hsCd\": \"04051000000\",\n            \"itemClsCd\": \"5022110802\",\n            \"itemCd\": \"RW1NTXU0000007\",\n            \"imptItemSttsCd\": \"4\",\n            \"remark\": \"This is a non-stock item\",\n            \"modrNm\": \"Admin2\",\n            \"modrId\": \"Admin2\"\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/imports/updateImportItems",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "imports",
+                                "updateImportItems"
+                            ]
+                        },
+                        "description": "This endpoint is used to acknowledge, or disregard imported items received from Smart Invoice which were declared on ASYCUDA. Acknowledged imported items will have to be saved in stock whereas disregarded imported items will not.\n\nDependency: After your import is approved, call the \"Save Stock Items\" endpoint to add the approved imports as stock items. Subsequently, call the \"Stock Master\" endpoint to update the existing stock quantities for any items that were already present in your inventory reflecting the additional approved imports. This process ensures that approved imports are accurately reflected in the overall stock inventory."
+                    }
+                }
+            ],
+            "description": "Endpoints for managing import information within Smart Invoice."
+        },
+        {
+            "name": "7. Sales Information",
+            "item": [
+                {
+                    "name": "Save Sales - Normal Sale",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"orgInvcNo\": 0,\n    \"cisInvcNo\": \"CIS001-1380\",\n    \"custTpin\": \"2000000000\",\n    \"custNm\": \"Smart Customer\",\n    \"salesTyCd\": \"N\",\n    \"rcptTyCd\": \"S\",\n    \"pmtTyCd\": \"01\",\n    \"salesSttsCd\": \"02\",\n    \"cfmDt\": \"20240508102010\",\n    \"salesDt\": \"20240728\",\n    \"stockRlsDt\": null,\n    \"cnclReqDt\": null,\n    \"cnclDt\": null,\n    \"rfdDt\": null,\n    \"rfdRsnCd\": null,\n    \"totItemCnt\": 2,\n    \"taxblAmtA\": 86.2069,\n    \"taxblAmtB\": 0.0,\n    \"taxblAmtC1\": 0.0,\n    \"taxblAmtC2\": 0.0,\n    \"taxblAmtC3\": 0.0,\n    \"taxblAmtD\": 0.0,\n    \"taxblAmtRvat\": 0.0,\n    \"taxblAmtE\": 0.0,\n    \"taxblAmtF\": 0.0,\n    \"taxblAmtIpl1\": 0.0,\n    \"taxblAmtIpl2\": 100,\n    \"taxblAmtTl\": 0.0,\n    \"taxblAmtEcm\": 0,\n    \"taxblAmtExeeg\": 0.0,\n    \"taxblAmtTot\": 0.0,\n    \"taxRtA\": 16,\n    \"taxRtB\": 16,\n    \"taxRtC1\": 0,\n    \"taxRtC2\": 0,\n    \"taxRtC3\": 0,\n    \"taxRtD\": 0,\n    \"tlAmt\": 0.0,\n    \"taxRtRvat\": 16,\n    \"taxRtE\": 0,\n    \"taxRtF\": 10,\n    \"taxRtIpl1\": 5,\n    \"taxRtIpl2\": 0,\n    \"taxRtTl\": 1.5,\n    \"taxRtEcm\": 5,\n    \"taxRtExeeg\": 3,\n    \"taxRtTot\": 0,\n    \"taxAmtA\": 13.7931,\n    \"taxAmtB\": 0.0,\n    \"taxAmtC1\": 0.0,\n    \"taxAmtC2\": 0.0,\n    \"taxAmtC3\": 0.0,\n    \"taxAmtD\": 0.0,\n    \"taxAmtRvat\": 0.0,\n    \"taxAmtE\": 0.0,\n    \"taxAmtF\": 0.0,\n    \"taxAmtIpl1\": 0.0,\n    \"taxAmtIpl2\": 0.0,\n    \"taxAmtTl\": 0.0,\n    \"taxAmtEcm\": 0.0,\n    \"taxAmtExeeg\": 0.0,\n    \"taxAmtTot\": 0.0,\n    \"totTaxblAmt\": 186.2069,\n    \"totTaxAmt\": 13.7931,\n    \"cashDcRt\": 25,\n    \"cashDcAmt\": 50,\n    \"totAmt\": 150,\n    \"prchrAcptcYn\": \"N\",\n    \"remark\": \"\",\n    \"regrId\": \"admin\",\n    \"regrNm\": \"admin\",\n    \"modrId\": \"admin\",\n    \"modrNm\": \"admin\",\n    \"saleCtyCd\": \"1\",\n    \"lpoNumber\": null,\n    \"currencyTyCd\": \"ZMW\",\n    \"exchangeRt\": \"1\",\n    \"destnCountryCd\": \"\",\n    \"dbtRsnCd\": \"\",\n    \"invcAdjustReason\": \"\",\n    \"itemList\": [\n        {\n            \"itemSeq\": 1,\n            \"itemCd\": \"20056\",\n            \"itemClsCd\": \"50102518\",\n            \"itemNm\": \"Bread\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"BA\",\n            \"pkg\": 0.0,\n            \"qtyUnitCd\": \"BE\",\n            \"qty\": 1.0,\n            \"prc\": 125,\n            \"splyAmt\": 125,\n            \"dcRt\": 20,\n            \"dcAmt\": 25,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0.0,\n            \"isrcAmt\": 0.0,\n            \"vatCatCd\": \"A\",\n            \"exciseTxCatCd\": null,\n            \"tlCatCd\": null,\n            \"iplCatCd\": null,\n            \"vatTaxblAmt\": 86.2069,\n            \"vatAmt\": 13.7931,\n            \"exciseTaxblAmt\": 0,\n            \"tlTaxblAmt\": 0.0,\n            \"iplTaxblAmt\": 0.0,\n            \"iplAmt\": 0.0,\n            \"tlAmt\": 0.0,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 100\n        },\n        {\n            \"itemSeq\": 2,\n            \"itemCd\": \"20056\",\n            \"itemClsCd\": \"50102518\",\n            \"itemNm\": \"Reinsurance\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"BA\",\n            \"pkg\": 0.0,\n            \"qtyUnitCd\": \"BE\",\n            \"qty\": 1.0,\n            \"prc\": 100,\n            \"splyAmt\": 100,\n            \"dcRt\": 0.0,\n            \"dcAmt\": 0.0,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0.0,\n            \"isrcAmt\": 0.0,\n            \"vatCatCd\": null,\n            \"exciseTxCatCd\": null,\n            \"vatTaxblAmt\": 0.0,\n            \"exciseTaxblAmt\": 0,\n            \"tlTaxblAmt\": 0.0,\n            \"tlCatCd\": null,\n            \"tlAmt\": 0.0,\n            \"iplCatCd\": \"IPL2\",\n            \"iplAmt\": 0.0,\n            \"iplTaxblAmt\": 100,\n            \"vatAmt\": 0.0,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 100\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/saveSales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "saveSales"
+                            ]
+                        },
+                        "description": "This endpoint facilitates the submission of normal sales data from the third-party system into Smart Invoice.\n\nDependency: After completing a sale, it's important to update the inventory to reflect the correct levels of the items sold. This involves using the 'Save Stock Items' endpoint to show stock movements. Following this, the 'Stock Master' endpoint should be called to update the stock quantities based on the sales recorded.\n\nNote: All sales receipts must be printed with the 'rcptNo' which is returned in success response when sale is posted to VSDC. This is the ZRA invoice number which must be referred to when taxpayer intends to issue a credit note or debit note."
+                    }
+                },
+                {
+                    "name": "Save Sales - Credit Note",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"001\",\n    \"orgSdcId\": \"000\",\n    \"orgInvcNo\": 7,\n    \"cisInvcNo\": \"DBT000002\",\n    \"custTpin\": \"1000724543\",\n    \"custNm\": \"Customer Name 1\",\n    \"salesTyCd\": \"N\",\n    \"rcptTyCd\": \"R\",\n    \"pmtTyCd\": \"01\",\n    \"salesSttsCd\": \"02\",\n    \"cfmDt\": \"20240509172010\",\n    \"salesDt\": \"20240509\",\n    \"stockRlsDt\": null,\n    \"cnclReqDt\": null,\n    \"cnclDt\": null,\n    \"rfdDt\": null,\n    \"rfdRsnCd\": null,\n    \"totItemCnt\": 1,\n    \"taxblAmtA\": 862.069,\n    \"taxblAmtB\": 0,\n    \"taxblAmtC1\": 0,\n    \"taxblAmtC2\": 0,\n    \"taxblAmtC3\": 0,\n    \"taxblAmtD\": 0,\n    \"taxblAmtRvat\": 0,\n    \"taxblAmtE\": 0,\n    \"taxblAmtF\": 0,\n    \"taxblAmtIpl1\": 0,\n    \"taxblAmtIpl2\": 0,\n    \"taxblAmtTl\": 0,\n    \"taxblAmtEcm\": 0,\n    \"taxblAmtExeeg\": 0,\n    \"taxblAmtTot\": 0,\n    \"taxRtA\": 16,\n    \"taxRtB\": 16,\n    \"taxRtC1\": 0,\n    \"taxRtC2\": 0,\n    \"taxRtC3\": 0,\n    \"taxRtD\": 0,\n    \"taxRtRvat\": 16,\n    \"taxRtE\": 0,\n    \"taxRtF\": 10,\n    \"taxRtIpl1\": 5,\n    \"taxRtIpl2\": 0,\n    \"taxRtTl\": 1.5,\n    \"taxRtEcm\": 5,\n    \"taxRtExeeg\": 3,\n    \"taxRtTot\": 0,\n    \"taxAmtA\": 137.931,\n    \"taxAmtB\": 0,\n    \"taxAmtC1\": 0,\n    \"taxAmtC2\": 0,\n    \"taxAmtC3\": 0,\n    \"taxAmtD\": 0,\n    \"taxAmtRvat\": 0,\n    \"taxAmtE\": 0,\n    \"taxAmtF\": 0,\n    \"taxAmtIpl1\": 0,\n    \"taxAmtIpl2\": 0,\n    \"taxAmtTl\": 0,\n    \"taxAmtEcm\": 0,\n    \"taxAmtExeeg\": 0,\n    \"taxAmtTot\": 0,\n    \"totTaxblAmt\": 862.069,\n    \"totTaxAmt\": 137.931,\n    \"cashDcRt\": 0,\n    \"cashDcAmt\": 0,\n    \"totAmt\": 1000,\n    \"prchrAcptcYn\": \"N\",\n    \"remark\": \"\",\n    \"regrId\": \"ADMIN\",\n    \"regrNm\": \"ADMIN\",\n    \"modrId\": \"ADMIN\",\n    \"modrNm\": \"ADMIN\",\n    \"saleCtyCd\": \"1\",\n    \"lpoNumber\": null,\n    \"currencyTyCd\": \"ZMW\",\n    \"exchangeRt\": \"1\",\n    \"destnCountryCd\": \"\",\n    \"dbtRsnCd\": \"03\",\n    \"invcAdjust\": \"Omitted Item\",\n    \"itemList\": [\n        {\n            \"itemSeq\": 1,\n            \"itemCd\": \"P200007\",\n            \"itemClsCd\": \"46181901\",\n            \"itemNm\": \"ITEM 1234\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"P/KG\",\n            \"pkg\": 0,\n            \"qtyUnitCd\": \"U\",\n            \"qty\": 10,\n            \"prc\": 100,\n            \"splyAmt\": 1000,\n            \"dcRt\": 0,\n            \"dcAmt\": 0,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0,\n            \"isrcAmt\": 0,\n            \"vatCatCd\": \"A\",\n            \"exciseTxCatCd\": null,\n            \"vatTaxblAmt\": 862.069,\n            \"exciseTaxblAmt\": 0,\n            \"vatAmt\": 137.931,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 1000\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/saveSales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "saveSales"
+                            ]
+                        },
+                        "description": "This endpoint facilitates the submission of credit note data from the third-party system into Smart Invoice. Credit notes are used to reverse or adjust a previously issued invoice.\n\nNote: The `rcptTyCd` is set to \"R\" to indicate a credit note transaction."
+                    }
+                },
+                {
+                    "name": "Save Sales - Debit Note",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"orgInvcNo\": 7,\n    \"cisInvcNo\": \"DBT000002\",\n    \"custTpin\": \"1000724543\",\n    \"custNm\": \"Customer Name 1\",\n    \"salesTyCd\": \"N\",\n    \"rcptTyCd\": \"D\",\n    \"pmtTyCd\": \"01\",\n    \"salesSttsCd\": \"02\",\n    \"cfmDt\": \"20240509172010\",\n    \"salesDt\": \"20240509\",\n    \"stockRlsDt\": null,\n    \"cnclReqDt\": null,\n    \"cnclDt\": null,\n    \"rfdDt\": null,\n    \"rfdRsnCd\": null,\n    \"totItemCnt\": 1,\n    \"taxblAmtA\": 862.069,\n    \"taxblAmtB\": 0,\n    \"taxblAmtC1\": 0,\n    \"taxblAmtC2\": 0,\n    \"taxblAmtC3\": 0,\n    \"taxblAmtD\": 0,\n    \"taxblAmtRvat\": 0,\n    \"taxblAmtE\": 0,\n    \"taxblAmtF\": 0,\n    \"taxblAmtIpl1\": 0,\n    \"taxblAmtIpl2\": 0,\n    \"taxblAmtTl\": 0,\n    \"taxblAmtEcm\": 0,\n    \"taxblAmtExeeg\": 0,\n    \"taxblAmtTot\": 0,\n    \"taxRtA\": 16,\n    \"taxRtB\": 16,\n    \"taxRtC1\": 0,\n    \"taxRtC2\": 0,\n    \"taxRtC3\": 0,\n    \"taxRtD\": 0,\n    \"taxRtRvat\": 16,\n    \"taxRtE\": 0,\n    \"taxRtF\": 10,\n    \"taxRtIpl1\": 5,\n    \"taxRtIpl2\": 0,\n    \"taxRtTl\": 1.5,\n    \"taxRtEcm\": 5,\n    \"taxRtExeeg\": 3,\n    \"taxRtTot\": 0,\n    \"taxAmtA\": 137.931,\n    \"taxAmtB\": 0,\n    \"taxAmtC1\": 0,\n    \"taxAmtC2\": 0,\n    \"taxAmtC3\": 0,\n    \"taxAmtD\": 0,\n    \"taxAmtRvat\": 0,\n    \"taxAmtE\": 0,\n    \"taxAmtF\": 0,\n    \"taxAmtIpl1\": 0,\n    \"taxAmtIpl2\": 0,\n    \"taxAmtTl\": 0,\n    \"taxAmtEcm\": 0,\n    \"taxAmtExeeg\": 0,\n    \"taxAmtTot\": 0,\n    \"totTaxblAmt\": 862.069,\n    \"totTaxAmt\": 137.931,\n    \"cashDcRt\": 0,\n    \"cashDcAmt\": 0,\n    \"totAmt\": 1000,\n    \"prchrAcptcYn\": \"N\",\n    \"remark\": \"\",\n    \"regrId\": \"ADMIN\",\n    \"regrNm\": \"ADMIN\",\n    \"modrId\": \"ADMIN\",\n    \"modrNm\": \"ADMIN\",\n    \"saleCtyCd\": \"1\",\n    \"lpoNumber\": null,\n    \"currencyTyCd\": \"ZMW\",\n    \"exchangeRt\": \"1\",\n    \"destnCountryCd\": \"\",\n    \"dbtRsnCd\": \"03\",\n    \"invcAdjustReason\": \"Omitted Item\",\n    \"itemList\": [\n        {\n            \"itemSeq\": 1,\n            \"itemCd\": \"P200007\",\n            \"itemClsCd\": \"46181901\",\n            \"itemNm\": \"ITEM 1234\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"P/KG\",\n            \"pkg\": 0,\n            \"qtyUnitCd\": \"U\",\n            \"qty\": 10,\n            \"prc\": 100,\n            \"splyAmt\": 1000,\n            \"dcRt\": 0,\n            \"dcAmt\": 0,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0,\n            \"isrcAmt\": 0,\n            \"vatCatCd\": \"A\",\n            \"exciseTxCatCd\": null,\n            \"vatTaxblAmt\": 862.069,\n            \"exciseTaxblAmt\": 0,\n            \"vatAmt\": 137.931,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 1000\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/saveSales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "saveSales"
+                            ]
+                        },
+                        "description": "This endpoint facilitates the submission of debit note data from the third-party system into Smart Invoice. Debit notes are used to increase the amount of a previously issued invoice.\n\nNote: The `rcptTyCd` is set to \"D\" to indicate a debit note transaction, and `dbtRsnCd` must be provided with a valid debit note reason code."
+                    }
+                },
+                {
+                    "name": "Save Sales - LPO Transaction",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"orgInvcNo\": 0,\n    \"cisInvcNo\": \"CIS001-22\",\n    \"custTpin\": \"2000000000\",\n    \"custNm\": \"LPO CUSTOMER\",\n    \"salesTyCd\": \"N\",\n    \"rcptTyCd\": \"S\",\n    \"pmtTyCd\": \"01\",\n    \"salesSttsCd\": \"02\",\n    \"cfmDt\": \"20240814102010\",\n    \"salesDt\": \"20240814\",\n    \"stockRlsDt\": null,\n    \"cnclReqDt\": null,\n    \"cnclDt\": null,\n    \"rfdDt\": null,\n    \"rfdRsnCd\": null,\n    \"totItemCnt\": 1,\n    \"taxblAmtA\": 0.0,\n    \"taxblAmtB\": 0.0,\n    \"taxblAmtC1\": 0.0,\n    \"taxblAmtC2\": 86.2069,\n    \"taxblAmtC3\": 0.0,\n    \"taxblAmtD\": 0.0,\n    \"taxblAmtRvat\": 0.0,\n    \"taxblAmtE\": 0.0,\n    \"taxblAmtF\": 0.0,\n    \"taxblAmtIpl1\": 0,\n    \"taxblAmtIpl2\": 0,\n    \"taxblAmtTl\": 0,\n    \"taxblAmtEcm\": 0,\n    \"taxblAmtExeeg\": 0.0,\n    \"taxblAmtTot\": 0.0,\n    \"taxRtA\": 16,\n    \"taxRtB\": 16,\n    \"taxRtC1\": 0,\n    \"taxRtC2\": 0,\n    \"taxRtC3\": 0,\n    \"taxRtD\": 0,\n    \"tlAmt\": 0.0,\n    \"taxRtRvat\": 16,\n    \"taxRtE\": 0,\n    \"taxRtF\": 10,\n    \"taxRtIpl1\": 5,\n    \"taxRtIpl2\": 0,\n    \"taxRtTl\": 1.5,\n    \"taxRtEcm\": 5,\n    \"taxRtExeeg\": 3,\n    \"taxRtTot\": 0,\n    \"taxAmtA\": 0.0,\n    \"taxAmtB\": 0.0,\n    \"taxAmtC1\": 0.0,\n    \"taxAmtC2\": 0.0,\n    \"taxAmtC3\": 0.0,\n    \"taxAmtD\": 0.0,\n    \"taxAmtRvat\": 0.0,\n    \"taxAmtE\": 0.0,\n    \"taxAmtF\": 0.0,\n    \"taxAmtIpl1\": 0.0,\n    \"taxAmtIpl2\": 0.0,\n    \"taxAmtTl\": 0.0,\n    \"taxAmtEcm\": 0.0,\n    \"taxAmtExeeg\": 0.0,\n    \"taxAmtTot\": 0.0,\n    \"totTaxblAmt\": 86.2069,\n    \"totTaxAmt\": 0,\n    \"cashDcRt\": 0,\n    \"cashDcAmt\": 0,\n    \"totAmt\": 86.2069,\n    \"prchrAcptcYn\": \"N\",\n    \"remark\": \"\",\n    \"regrId\": \"admin\",\n    \"regrNm\": \"admin\",\n    \"modrId\": \"admin\",\n    \"modrNm\": \"admin\",\n    \"saleCtyCd\": \"1\",\n    \"lpoNumber\": \"109506957\",\n    \"currencyTyCd\": \"ZMW\",\n    \"exchangeRt\": \"1\",\n    \"destnCountryCd\": \"\",\n    \"dbtRsnCd\": \"\",\n    \"invcAdjustReason\": \"\",\n    \"itemList\": [\n        {\n            \"itemSeq\": 1,\n            \"itemCd\": \"20056\",\n            \"itemClsCd\": \"50102518\",\n            \"itemNm\": \"Item One\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"BA\",\n            \"pkg\": 0.0,\n            \"qtyUnitCd\": \"BE\",\n            \"qty\": 1.0,\n            \"prc\": 86.2069,\n            \"splyAmt\": 86.2069,\n            \"dcRt\": 0,\n            \"dcAmt\": 0.0,\n            \"vatCatCd\": \"C2\",\n            \"vatTaxblAmt\": 86.2069,\n            \"vatAmt\": 0,\n            \"totAmt\": 86.2069\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/saveSales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "saveSales"
+                            ]
+                        },
+                        "description": "This endpoint facilitates the submission of LPO (Local Purchase Order) transaction data from the third-party system into Smart Invoice.\n\nNote: For LPO transactions, a valid combination of seller TPIN, customer TPIN and LPO number are required as registered on TaxOnline. The `lpoNumber` field must be provided with a valid LPO number, and the tax category for items should be set to \"C2\" (Zero-rating LPO)."
+                    }
+                },
+                {
+                    "name": "Save Sales - Exports",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"orgInvcNo\": 0,\n    \"cisInvcNo\": \"INV001\",\n    \"custTpin\": \"2000000000\",\n    \"custNm\": \"SMART CUSTOMER\",\n    \"salesTyCd\": \"N\",\n    \"rcptTyCd\": \"S\",\n    \"pmtTyCd\": \"01\",\n    \"salesSttsCd\": \"02\",\n    \"cfmDt\": \"20240813102010\",\n    \"salesDt\": \"20240813\",\n    \"stockRlsDt\": null,\n    \"cnclReqDt\": null,\n    \"cnclDt\": null,\n    \"rfdDt\": null,\n    \"rfdRsnCd\": null,\n    \"totItemCnt\": 1,\n    \"taxblAmtA\": 0,\n    \"taxblAmtB\": 0,\n    \"taxblAmtC1\": 400,\n    \"taxblAmtC2\": 0,\n    \"taxblAmtC3\": 0,\n    \"taxblAmtD\": 0,\n    \"taxblAmtRvat\": 0,\n    \"taxblAmtE\": 0,\n    \"taxblAmtF\": 0,\n    \"taxblAmtIpl1\": 0,\n    \"taxblAmtIpl2\": 0,\n    \"taxblAmtTl\": 0,\n    \"taxblAmtEcm\": 0,\n    \"taxblAmtExeeg\": 0,\n    \"taxblAmtTot\": 0,\n    \"taxRtA\": 16,\n    \"taxRtB\": 16,\n    \"taxRtC1\": 0,\n    \"taxRtC2\": 0,\n    \"taxRtC3\": 0,\n    \"taxRtD\": 0,\n    \"taxRtRvat\": 16,\n    \"taxRtE\": 0,\n    \"taxRtF\": 10,\n    \"taxRtIpl1\": 5,\n    \"taxRtIpl2\": 0,\n    \"taxRtTl\": 1.5,\n    \"taxRtEcm\": 5,\n    \"taxRtExeeg\": 3,\n    \"taxRtTot\": 0,\n    \"taxAmtA\": 0,\n    \"taxAmtB\": 0,\n    \"taxAmtC1\": 0,\n    \"taxAmtC2\": 0,\n    \"taxAmtC3\": 0,\n    \"taxAmtD\": 0,\n    \"taxAmtRvat\": 0,\n    \"taxAmtE\": 0,\n    \"taxAmtF\": 0,\n    \"taxAmtIpl1\": 0,\n    \"taxAmtIpl2\": 0,\n    \"taxAmtTl\": 0,\n    \"taxAmtEcm\": 0,\n    \"taxAmtExeeg\": 0,\n    \"taxAmtTot\": 0,\n    \"totTaxblAmt\": 400,\n    \"totTaxAmt\": 0,\n    \"cashDcRt\": 0,\n    \"cashDcAmt\": 0,\n    \"totAmt\": 400,\n    \"prchrAcptcYn\": \"N\",\n    \"remark\": \"\",\n    \"regrId\": \"admin\",\n    \"regrNm\": \"admin\",\n    \"modrId\": \"admin\",\n    \"modrNm\": \"admin\",\n    \"saleCtyCd\": \"1\",\n    \"lpoNumber\": null,\n    \"currencyTyCd\": \"ZMW\",\n    \"exchangeRt\": \"1\",\n    \"destnCountryCd\": \"ZM\",\n    \"dbtRsnCd\": \"\",\n    \"invcAdjustReason\": \"\",\n    \"itemList\": [\n        {\n            \"itemSeq\": 1,\n            \"itemCd\": \"20054\",\n            \"itemClsCd\": \"50102517\",\n            \"itemNm\": \"Maize meal - African Pride\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"BA\",\n            \"pkg\": 0,\n            \"qtyUnitCd\": \"BE\",\n            \"qty\": 4,\n            \"prc\": 100,\n            \"splyAmt\": 400,\n            \"dcRt\": 0,\n            \"dcAmt\": 0,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0,\n            \"isrcAmt\": 0,\n            \"vatCatCd\": \"C1\",\n            \"exciseTxCatCd\": null,\n            \"vatTaxblAmt\": 400,\n            \"exciseTaxblAmt\": 0,\n            \"vatAmt\": 0,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 400\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/saveSales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "saveSales"
+                            ]
+                        },
+                        "description": "This endpoint facilitates the submission of export sales data from the third-party system into Smart Invoice.\n\nNote: For export transactions, the `destnCountryCd` field must be provided with a valid destination country code, and the tax category for items should be set to \"C1\" (Exports)."
+                    }
+                },
+                {
+                    "name": "Get Principals",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20240123121449\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/selectPrincipals",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "selectPrincipals"
+                            ]
+                        },
+                        "description": "This endpoint is designed to get principals for RVAT agents.\n\nNote: This endpoint is intended solely for use by RVAT Agents to retrieve principal details for processing RVAT transactions."
+                    }
+                },
+                {
+                    "name": "Save Sales - RVAT with Agent",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"orgInvcNo\": 0,\n    \"cisInvcNo\": \"CIS001-1379\",\n    \"custTpin\": \"2000000000\",\n    \"custNm\": \"Smart Customer\",\n    \"principalId\": \"641\",\n    \"salesTyCd\": \"N\",\n    \"rcptTyCd\": \"S\",\n    \"pmtTyCd\": \"01\",\n    \"salesSttsCd\": \"02\",\n    \"cfmDt\": \"20240508102010\",\n    \"salesDt\": \"20240728\",\n    \"stockRlsDt\": null,\n    \"cnclReqDt\": null,\n    \"cnclDt\": null,\n    \"rfdDt\": null,\n    \"rfdRsnCd\": null,\n    \"totItemCnt\": 2,\n    \"taxblAmtA\": 86.2069,\n    \"taxblAmtB\": 0.0,\n    \"taxblAmtC1\": 0.0,\n    \"taxblAmtC2\": 0.0,\n    \"taxblAmtC3\": 0.0,\n    \"taxblAmtD\": 0.0,\n    \"taxblAmtRvat\": 0.0,\n    \"taxblAmtE\": 0.0,\n    \"taxblAmtF\": 0.0,\n    \"taxblAmtIpl1\": 0.0,\n    \"taxblAmtIpl2\": 100,\n    \"taxblAmtTl\": 0.0,\n    \"taxblAmtEcm\": 0,\n    \"taxblAmtExeeg\": 0.0,\n    \"taxblAmtTot\": 0.0,\n    \"taxRtA\": 16,\n    \"taxRtB\": 16,\n    \"taxRtC1\": 0,\n    \"taxRtC2\": 0,\n    \"taxRtC3\": 0,\n    \"taxRtD\": 0,\n    \"tlAmt\": 0.0,\n    \"taxRtRvat\": 16,\n    \"taxRtE\": 0,\n    \"taxRtF\": 10,\n    \"taxRtIpl1\": 5,\n    \"taxRtIpl2\": 0,\n    \"taxRtTl\": 1.5,\n    \"taxRtEcm\": 5,\n    \"taxRtExeeg\": 3,\n    \"taxRtTot\": 0,\n    \"taxAmtA\": 13.7931,\n    \"taxAmtB\": 0.0,\n    \"taxAmtC1\": 0.0,\n    \"taxAmtC2\": 0.0,\n    \"taxAmtC3\": 0.0,\n    \"taxAmtD\": 0.0,\n    \"taxAmtRvat\": 0.0,\n    \"taxAmtE\": 0.0,\n    \"taxAmtF\": 0.0,\n    \"taxAmtIpl1\": 0.0,\n    \"taxAmtIpl2\": 0.0,\n    \"taxAmtTl\": 0.0,\n    \"taxAmtEcm\": 0.0,\n    \"taxAmtExeeg\": 0.0,\n    \"taxAmtTot\": 0.0,\n    \"totTaxblAmt\": 186.2069,\n    \"totTaxAmt\": 13.7931,\n    \"cashDcRt\": 0,\n    \"cashDcAmt\": 0,\n    \"totAmt\": 200,\n    \"prchrAcptcYn\": \"N\",\n    \"remark\": \"\",\n    \"regrId\": \"admin\",\n    \"regrNm\": \"admin\",\n    \"modrId\": \"admin\",\n    \"modrNm\": \"admin\",\n    \"saleCtyCd\": \"1\",\n    \"lpoNumber\": null,\n    \"currencyTyCd\": \"ZMW\",\n    \"exchangeRt\": \"1\",\n    \"destnCountryCd\": \"\",\n    \"dbtRsnCd\": \"\",\n    \"invcAdjustReason\": \"\",\n    \"itemList\": [\n        {\n            \"itemSeq\": 1,\n            \"itemCd\": \"20056\",\n            \"itemClsCd\": \"50102518\",\n            \"itemNm\": \"Bread\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"BA\",\n            \"pkg\": 0.0,\n            \"qtyUnitCd\": \"BE\",\n            \"qty\": 1.0,\n            \"prc\": 100,\n            \"splyAmt\": 100,\n            \"dcRt\": 0.0,\n            \"dcAmt\": 0.0,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0.0,\n            \"isrcAmt\": 0.0,\n            \"vatCatCd\": \"A\",\n            \"exciseTxCatCd\": null,\n            \"tlCatCd\": null,\n            \"iplCatCd\": null,\n            \"vatTaxblAmt\": 86.2069,\n            \"vatAmt\": 13.7931,\n            \"exciseTaxblAmt\": 0,\n            \"tlTaxblAmt\": 0.0,\n            \"iplTaxblAmt\": 0.0,\n            \"iplAmt\": 0.0,\n            \"tlAmt\": 0.0,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 100\n        },\n        {\n            \"itemSeq\": 2,\n            \"itemCd\": \"20056\",\n            \"itemClsCd\": \"50102518\",\n            \"itemNm\": \"Reinsurance\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"BA\",\n            \"pkg\": 0.0,\n            \"qtyUnitCd\": \"BE\",\n            \"qty\": 1.0,\n            \"prc\": 100,\n            \"splyAmt\": 100,\n            \"dcRt\": 0.0,\n            \"dcAmt\": 0.0,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0.0,\n            \"isrcAmt\": 0.0,\n            \"vatCatCd\": null,\n            \"exciseTxCatCd\": null,\n            \"vatTaxblAmt\": 0.0,\n            \"exciseTaxblAmt\": 0,\n            \"tlTaxblAmt\": 0.0,\n            \"tlCatCd\": null,\n            \"tlAmt\": 0.0,\n            \"iplCatCd\": \"IPL2\",\n            \"iplAmt\": 0.0,\n            \"iplTaxblAmt\": 100,\n            \"vatAmt\": 0.0,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 100\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/saveSales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "saveSales"
+                            ]
+                        },
+                        "description": "This endpoint facilitates the submission of RVAT (Reverse VAT) sales data with agent from the third-party system into Smart Invoice.\n\nNote: For RVAT transactions with an agent, the `principalId` field must be provided with a valid principal ID, which can be obtained from the `selectPrincipals` endpoint."
+                    }
+                },
+                {
+                    "name": "Save Sales - MTV",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"cisInvcNo\": \"INV00004\",\n    \"orgInvcNo\": 0,\n    \"custTpin\": \"2000000000\",\n    \"custNm\": \"Mulonda Mubita\",\n    \"salesTyCd\": \"N\",\n    \"rcptTyCd\": \"S\",\n    \"pmtTyCd\": \"01\",\n    \"salesSttsCd\": \"02\",\n    \"cfmDt\": \"20240508102010\",\n    \"salesDt\": \"20240508\",\n    \"stockRlsDt\": null,\n    \"cnclReqDt\": null,\n    \"cnclDt\": null,\n    \"rfdDt\": null,\n    \"rfdRsnCd\": null,\n    \"totItemCnt\": 2,\n    \"taxblAmtA\": 0.0,\n    \"taxblAmtB\": 215.5172,\n    \"taxblAmtC\": 0.0,\n    \"taxblAmtC1\": 0.0,\n    \"taxblAmtC2\": 0.0,\n    \"taxblAmtC3\": 0.0,\n    \"taxblAmtD\": 0.0,\n    \"taxblAmtRvat\": 0.0,\n    \"taxblAmtE\": 0.0,\n    \"taxblAmtF\": 0.0,\n    \"taxblAmtIpl1\": 0,\n    \"taxblAmtIpl2\": 0.0,\n    \"taxblAmtTl\": 0,\n    \"taxblAmtEcm\": 0,\n    \"taxblAmtExeeg\": 0.0,\n    \"taxblAmtTot\": 0.0,\n    \"taxRtA\": 16,\n    \"taxRtB\": 16,\n    \"taxRtC1\": 0,\n    \"taxRtC2\": 0,\n    \"taxRtC3\": 0,\n    \"taxRtD\": 0,\n    \"taxRtRvat\": 16,\n    \"taxRtE\": 0,\n    \"taxRtF\": 10,\n    \"taxRtIpl1\": 5,\n    \"taxRtIpl2\": 0,\n    \"taxRtTl\": 1.5,\n    \"taxRtEcm\": 5,\n    \"taxRtExeeg\": 3,\n    \"taxRtTot\": 0,\n    \"taxAmtA\": 0.0,\n    \"taxAmtB\": 34.4828,\n    \"taxAmtC\": 0.0,\n    \"taxAmtC1\": 0.0,\n    \"taxAmtC2\": 0.0,\n    \"taxAmtC3\": 0.0,\n    \"taxAmtD\": 0.0,\n    \"taxAmtRvat\": 0.0,\n    \"taxAmtE\": 0.0,\n    \"taxAmtF\": 0,\n    \"taxAmtIpl1\": 0,\n    \"taxAmtIpl2\": 0.0,\n    \"taxAmtTl\": 0,\n    \"taxAmtEcm\": 0.0,\n    \"taxAmtExeeg\": 0.0,\n    \"taxAmtTot\": 0.0,\n    \"totTaxblAmt\": 215.5172,\n    \"totTaxAmt\": 34.4828,\n    \"totAmt\": 200,\n    \"prchrAcptcYn\": \"N\",\n    \"remark\": \"\",\n    \"regrId\": \"admin\",\n    \"regrNm\": \"admin\",\n    \"modrId\": \"admin\",\n    \"modrNm\": \"admin\",\n    \"saleCtyCd\": \"1\",\n    \"lpoNumber\": null,\n    \"currencyTyCd\": \"ZMW\",\n    \"exchangeRt\": \"1\",\n    \"destnCountryCd\": \"\",\n    \"dbtRsnCd\": \"\",\n    \"invcAdjustReason\": \"\",\n    \"receipt\": {\n        \"prchrAcptcYn\": \"N\"\n    },\n    \"itemList\": [\n        {\n            \"itemSeq\": 1,\n            \"itemCd\": \"20044\",\n            \"itemClsCd\": \"50102517\",\n            \"itemNm\": \"Chicken Wings\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"BA\",\n            \"pkg\": 0.0,\n            \"qtyUnitCd\": \"BE\",\n            \"qty\": 1.0,\n            \"rrp\": 150,\n            \"prc\": 100,\n            \"splyAmt\": 150,\n            \"dcRt\": 0.0,\n            \"dcAmt\": 0.0,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0.0,\n            \"isrcAmt\": 0.0,\n            \"vatCatCd\": \"B\",\n            \"exciseTxCatCd\": null,\n            \"vatTaxblAmt\": 129.3103,\n            \"exciseTaxblAmt\": 0,\n            \"vatAmt\": 20.6897,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 100\n        },\n        {\n            \"itemSeq\": 2,\n            \"itemCd\": \"20044\",\n            \"itemClsCd\": \"50102517\",\n            \"itemNm\": \"Chips\",\n            \"bcd\": \"\",\n            \"pkgUnitCd\": \"BA\",\n            \"pkg\": 0.0,\n            \"qtyUnitCd\": \"BE\",\n            \"qty\": 1.0,\n            \"rrp\": 50,\n            \"prc\": 100,\n            \"splyAmt\": 100,\n            \"dcRt\": 0.0,\n            \"dcAmt\": 0.0,\n            \"isrccCd\": \"\",\n            \"isrccNm\": \"\",\n            \"isrcRt\": 0.0,\n            \"isrcAmt\": 0.0,\n            \"vatCatCd\": \"B\",\n            \"exciseTxCatCd\": null,\n            \"vatTaxblAmt\": 86.2069,\n            \"exciseTaxblAmt\": 0,\n            \"vatAmt\": 13.7931,\n            \"exciseTxAmt\": 0,\n            \"totAmt\": 100\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/saveSales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "saveSales"
+                            ]
+                        },
+                        "description": "This endpoint facilitates the submission of MTV (Minimum Taxable Value) sales data from the third-party system into Smart Invoice.\n\nNote: For MTV transactions, the tax category for items should be set to \"B\" (MTV), and the `rrp` field must be provided with the Recommended Retail Price set by the manufacturer."
+                    }
+                },
+                {
+                    "name": "Select Invoice",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"invcSdcId\": \"SDC0060000356\",\n    \"cisInvcNo\": \"CIS001-7\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsSales/selectInvoice",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsSales",
+                                "selectInvoice"
+                            ]
+                        },
+                        "description": "This endpoint facilitates the retrieval of invoice transactions already posted to ZRA.\n\nNote: This request will only return details if an invoice was successfully posted to ZRA. More information about the uploaded invoices is available on the Portal under Transaction Management."
+                    }
+                }
+            ],
+            "description": "Endpoints for managing sales information within Smart Invoice."
+        },
+        {
+            "name": "8. Purchase Information",
+            "item": [
+                {
+                    "name": "Get Purchases",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsPurchase/selectTrnsPurchaseSales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsPurchase",
+                                "selectTrnsPurchaseSales"
+                            ]
+                        },
+                        "description": "Retrieve all purchases made by a business when they are supplied by another business using Smart Invoice."
+                    }
+                },
+                {
+                    "name": "Save Purchase",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"cisInvcNo\": \"cis134\",\n    \"orgInvcNo\": 0,\n    \"spplrTpin\": \"9999999990\",\n    \"spplrBhfId\": \"000\",\n    \"spplrNm\": \"Supplier Name 1\",\n    \"spplrInvcNo\": \"INV0001\",\n    \"regTyCd\": \"M\",\n    \"pchsTyCd\": \"N\",\n    \"rcptTyCd\": \"P\",\n    \"pmtTyCd\": \"01\",\n    \"pchsSttsCd\": \"02\",\n    \"cfmDt\": \"20240509210300\",\n    \"pchsDt\": \"20240509\",\n    \"cnclReqDt\": \"\",\n    \"cnclDt\": \"\",\n    \"totItemCnt\": 1,\n    \"totTaxblAmt\": 86.2069,\n    \"totTaxAmt\": 13.7931,\n    \"totAmt\": 100,\n    \"remark\": \"remarks\",\n    \"regrNm\": \"ADMIN\",\n    \"regrId\": \"ADMIN\",\n    \"modrNm\": \"ADMIN\",\n    \"modrId\": \"ADMIN\",\n    \"itemList\": [\n        {\n            \"itemSeq\": 1,\n            \"itemCd\": \"ZM2BGKG0000001\",\n            \"itemClsCd\": \"50102517\",\n            \"itemNm\": \"Item Name 1\",\n            \"bcd\": null,\n            \"pkgUnitCd\": \"BG\",\n            \"pkg\": 0,\n            \"qtyUnitCd\": \"KG\",\n            \"qty\": 1,\n            \"prc\": 100,\n            \"splyAmt\": 100,\n            \"dcRt\": 0,\n            \"dcAmt\": 0,\n            \"taxTyCd\": \"A\",\n            \"iplCatCd\": null,\n            \"tlCatCd\": null,\n            \"exciseCatCd\": null,\n            \"taxblAmt\": 86.21,\n            \"vatCatCd\": \"A\",\n            \"iplTaxblAmt\": null,\n            \"tlTaxblAmt\": null,\n            \"exciseTaxblAmt\": null,\n            \"taxAmt\": 13.79,\n            \"iplAmt\": null,\n            \"tlAmt\": null,\n            \"exciseTxAmt\": null,\n            \"totAmt\": 100\n        }\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/trnsPurchase/savePurchase",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "trnsPurchase",
+                                "savePurchase"
+                            ]
+                        },
+                        "description": "This endpoint is utilized to approve or reject all purchases made by a business from suppliers.\n\nDependency: Upon approval of a purchase, you must call the \"Save Stock Items\" endpoint to add the approved purchases as stock items. Subsequently, call the \"Stock Master\" endpoint to update the existing stock quantities for any items that were already present in your inventory reflecting the additional approved purchases. This process ensures that approved purchases are accurately reflected in the overall stock inventory."
+                    }
+                }
+            ],
+            "description": "Endpoints for managing purchase information within Smart Invoice."
+        },
+        {
+            "name": "9. Stock Information",
+            "item": [
+                {
+                    "name": "Get Stock Items",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tpin\": \"1000000000\",\n    \"bhfId\": \"000\",\n    \"lastReqDt\": \"20231215000000\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/stock/selectStockItems",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "stock",
+                                "selectStockItems"
+                            ]
+                        },
+                        "description": "Retrieves stock information for all items, including quantities, item details, branch-level stock, etc."
+                    }
+                }
+            ]
+        }
+    ]
+}
